@@ -15,6 +15,7 @@ use crate::card::{Card, CARD_HEIGHT, CARD_WIDTH};
 
 mod card;
 mod effect;
+mod text;
 
 const HORIZONTAL_CARD_MARGIN: u16 = 3;
 const VERTICAL_CARD_MARGIN: u16 = 1;
@@ -178,6 +179,11 @@ where
 
         if let Event::Resize(x, y) = event {
             size = (x,y);
+            state.dirty = true;
+        }
+
+        if event == Event::Key(KeyCode::Char('n').into()) {
+            text::next_style();
             state.dirty = true;
         }
 
