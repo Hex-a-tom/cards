@@ -1,0 +1,40 @@
+╷╶┌ ╴┐─┬╵│└ ├┘┤┴┼
+╭╮╰╯ 	
+
+
+╭──────────┬───────╮  ╭───────────────────────────────╮
+│ 28/28   │   4 理│  │  Poison                      │
+├──────────┴───────┤  │ Deals damage equal to counter │
+│    Wolly Drek    │  │ Counts down by one            │
+├──────────────────┤  ╰───────────────────────────────╯
+│Eat a random ally │
+│absorbing their   │
+│ ,理and effects  │
+│                  │
+│                  │
+│                  │
+├──────────────────┤
+│ 2               │
+╰──────────────────╯
+
+╭ ﰕ ────Test───────╮  ╭───────────────────────────────╮
+│10/10        2 理│  │  Poison                      │
+├1 1⬣─────────────┤  │ Deals damage equal to counter │
+│Does nothing.     │  │ Counts down by one            │
+│But it still      │  ╰───────────────────────────────╯
+│has too have a    │
+│long description  │
+│because why not   │
+│                  │
+╰2 1ﮊ 2⬇──────────╯
+
+╭ ─ ─ ─ ─ ─ ─ ─ ─ ─╮
+╵                  ╷
+╵                  ╷
+╵                  ╷
+╵                  ╷
+╵                  ╷
+╵                  ╷
+╵                  ╷
+╵                  ╷
+╰─ ─ ─ ─ ─ ─ ─ ─ ─ ╯
