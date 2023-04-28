@@ -51,7 +51,7 @@ impl Effect {
                     w,
                     style::Print(self.stack),
                     style::SetForegroundColor(Color::Green),
-                    style::Print(" "),
+                    style::Print("Po "),
                     style::ResetColor,
                     )
             },
@@ -59,7 +59,7 @@ impl Effect {
                 queue!(
                     w,
                     style::Print(self.stack),
-                    style::Print("ﮊ "),
+                    style::Print("Cu "),
                     )
             }
         }

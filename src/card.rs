@@ -109,7 +109,7 @@ impl Card {
             style::Print('/'),
             style::Print(self.max_health),
             style::SetForegroundColor(Color::Red),
-            style::Print(''),
+            style::Print("HP"),
             style::ResetColor,
         )?;
 
@@ -117,12 +117,12 @@ impl Card {
         queue!
         (
             w,
-            cursor::MoveTo(x + 15, y + 1),
+            cursor::MoveTo(x + 14, y + 1),
             style::Print(self.damage),
 
-            cursor::MoveTo(x + 17, y + 1),
+            cursor::MoveTo(x + 16, y + 1),
             style::SetForegroundColor(Color::Blue),
-            style::Print('理'),
+            style::Print("DMG"),
             style::ResetColor,
         )?;
 
@@ -149,7 +149,7 @@ impl Card {
         }
 
         // Effects
-        if self.effects.len() > 0 {
+        if !self.effects.is_empty() {
             queue!(
                 w,
                 cursor::MoveTo(x+1, y+CARD_HEIGHT-1),
