@@ -7,7 +7,7 @@ use crossterm::{
     cursor,
 };
 
-use crate::effect::{Effect, EffectType};
+use crate::effect::{Effect, EffectType, StateEffect};
 use crate::text;
 
 pub const CARD_WIDTH: u16 = 20;
@@ -39,14 +39,17 @@ pub const EMPTY_CARD: &'static str = r#"╭ ─ ─ ─ ─ ─ ─ ─ ─ ─�
 pub struct Card {
     name: &'static str,
     health: i32,
+    health_overload: i32,
     max_health: i32,
-    damage: i32,
+    base_damage: i32,
+    added_damage: i32,
     description: &'static str,
 
     effects: Vec<Effect>,
 
-    on_attack_start: Option<fn(&mut Card) -> ()>,
-    on_attack_end: Option<fn(&mut Card) -> ()>,
+    state_effects: Vec<StateEffect>,
+
+    attack_effects: Vec<i32>,
 }
 
 impl Card {
@@ -55,10 +58,27 @@ impl Card {
             name,
             health: max_health,
             max_health,
-            damage,
+            base_damage: damage,
             description,
             ..Default::default()
         }
+    }
+
+    pub fn recalculate_stats(&mut self) {
+        self.health_overload = 0;
+        self.added_damage = 0;
+
+        for i in 0..self.state_effects.len() {
+            self.state_effects[i].clone().apply(i, self)
+        }
+    }
+
+    pub fn add_damage(&mut self, amount: i32) {
+        self.added_damage += amount
+    }
+
+    pub fn add_health_overload(&mut self, amount: i32) {
+        self.health_overload += amount
     }
 
     pub fn take_damage(&mut self, mut amount: i32, from_effect: bool) {
@@ -121,7 +141,7 @@ impl Card {
         (
             w,
             cursor::MoveTo(x + 14, y + 1),
-            style::Print(self.damage),
+            style::Print(self.base_damage + self.added_damage),
 
             cursor::MoveTo(x + 16, y + 1),
             style::SetForegroundColor(t.0),

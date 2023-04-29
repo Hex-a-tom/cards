@@ -6,6 +6,23 @@ use crate::text;
 
 use std::io;
 
+#[derive(Debug, Clone)]
+pub enum StateEffect {
+    AddDamage { amount: i32 },
+    AddMaxHealth { amount: i32, applied: bool },
+}
+
+impl StateEffect {
+    pub fn apply(self, pos: usize, card: &mut Card) {
+        match self {
+            Self::AddDamage { amount } => card.add_damage(amount),
+            Self::AddMaxHealth { amount, applied } => {
+                card.add_health_overload(amount)
+            }
+        }
+    }
+}
+
 #[derive(Debug, PartialEq, Clone)]
 pub enum EffectType {
     Poison,
