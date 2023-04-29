@@ -2,6 +2,8 @@ use crossterm::{queue, style, style::Color};
 
 use crate::Card;
 
+use crate::text;
+
 use std::io;
 
 #[derive(Debug, Clone)]
@@ -64,19 +66,23 @@ impl Effect {
     {
         match self.effect_type {
             EffectType::Poison => {
+                let t = text::get_poison_text();
                 queue!(
                     w,
                     style::Print(self.stack),
-                    style::SetForegroundColor(Color::Green),
-                    style::Print(" "),
+                    style::SetForegroundColor(t.0),
+                    style::Print(t.1),
                     style::ResetColor,
                     )
             },
             EffectType::Curse => {
+                let t = text::get_curse_text();
                 queue!(
                     w,
                     style::Print(self.stack),
-                    style::Print("ﮊ "),
+                    style::SetForegroundColor(t.0),
+                    style::Print(t.1),
+                    style::ResetColor,
                     )
             }
         }

@@ -8,6 +8,7 @@ use crossterm::{
 };
 
 use crate::effect::{Effect, EffectType, StateEffect};
+use crate::text;
 
 pub const CARD_WIDTH: u16 = 20;
 pub const CARD_HEIGHT: u16 = 10;
@@ -121,6 +122,7 @@ impl Card {
         }
 
         // Health
+        let t = text::get_hp_text();
         queue!
         (
             w,
@@ -128,21 +130,22 @@ impl Card {
             style::Print(self.health),
             style::Print('/'),
             style::Print(self.max_health),
-            style::SetForegroundColor(Color::Red),
-            style::Print(''),
+            style::SetForegroundColor(t.0),
+            style::Print(t.1),
             style::ResetColor,
         )?;
 
+        let t = text::get_dmg_text();
         // Damage
         queue!
         (
             w,
-            cursor::MoveTo(x + 15, y + 1),
+            cursor::MoveTo(x + 14, y + 1),
             style::Print(self.base_damage + self.added_damage),
 
-            cursor::MoveTo(x + 17, y + 1),
-            style::SetForegroundColor(Color::Blue),
-            style::Print('理'),
+            cursor::MoveTo(x + 16, y + 1),
+            style::SetForegroundColor(t.0),
+            style::Print(t.1),
             style::ResetColor,
         )?;
 
@@ -169,7 +172,7 @@ impl Card {
         }
 
         // Effects
-        if self.effects.len() > 0 {
+        if !self.effects.is_empty() {
             queue!(
                 w,
                 cursor::MoveTo(x+1, y+CARD_HEIGHT-1),

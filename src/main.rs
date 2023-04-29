@@ -15,6 +15,7 @@ use crate::card::{Card, CARD_HEIGHT, CARD_WIDTH};
 
 mod card;
 mod effect;
+mod text;
 
 const HORIZONTAL_CARD_MARGIN: u16 = 3;
 const VERTICAL_CARD_MARGIN: u16 = 1;
@@ -26,17 +27,19 @@ const BOARD_WIDTH: u16 = BOARD_COLUMNS as u16 * CARD_WIDTH + (BOARD_COLUMNS as u
 const MIN_X: u16 = BOARD_WIDTH * 2 + CENTER_BOARD_MARGIN;
 const MIN_Y: u16 = CARD_HEIGHT * BOARD_ROWS as u16 + (CARD_HEIGHT -1) * VERTICAL_CARD_MARGIN + CARD_HEIGHT;
 
+type CardsOnBoard = [[Option<Card>; BOARD_ROWS]; BOARD_COLUMNS];
+
 #[derive(Default)]
 struct GameState {
     player_cards: Vec<Card>,
 
-    player_board: [[Option<Card>; BOARD_ROWS]; BOARD_COLUMNS],
-    enemy_board: [[Option<Card>; BOARD_ROWS]; BOARD_COLUMNS],
+    player_board: CardsOnBoard,
+    enemy_board: CardsOnBoard,
 
     dirty: bool,
 }
 
-fn draw_board<W>(board: &[[Option<Card>; BOARD_ROWS]; BOARD_COLUMNS], w: &mut W, x: u16, y: u16) -> io::Result<()>
+fn draw_board<W>(board: &CardsOnBoard, w: &mut W, x: u16, y: u16) -> io::Result<()>
 where
 W: io::Write 
 {
@@ -176,6 +179,11 @@ where
 
         if let Event::Resize(x, y) = event {
             size = (x,y);
+            state.dirty = true;
+        }
+
+        if event == Event::Key(KeyCode::Char('n').into()) {
+            text::next_style();
             state.dirty = true;
         }
 
