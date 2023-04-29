@@ -1,8 +1,7 @@
 use crossterm::{queue, style, style::Color};
 
 use crate::Card;
-
-use crate::text;
+use crate::icons;
 
 use std::io;
 
@@ -66,7 +65,7 @@ impl Effect {
     {
         match self.effect_type {
             EffectType::Poison => {
-                let t = text::get_poison_text();
+                let t = icons::poison();
                 queue!(
                     w,
                     style::Print(self.stack),
@@ -76,7 +75,7 @@ impl Effect {
                     )
             },
             EffectType::Curse => {
-                let t = text::get_curse_text();
+                let t = icons::curse();
                 queue!(
                     w,
                     style::Print(self.stack),

@@ -15,7 +15,7 @@ use crate::card::{Card, CARD_HEIGHT, CARD_WIDTH};
 
 mod card;
 mod effect;
-mod text;
+mod icons;
 
 const HORIZONTAL_CARD_MARGIN: u16 = 3;
 const VERTICAL_CARD_MARGIN: u16 = 1;
@@ -183,7 +183,7 @@ where
         }
 
         if event == Event::Key(KeyCode::Char('n').into()) {
-            text::next_style();
+            icons::next_style();
             state.dirty = true;
         }
 
