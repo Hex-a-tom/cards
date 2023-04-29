@@ -59,10 +59,13 @@ impl Effect {
                     )
             },
             EffectType::Curse => {
+                let t = text::get_curse_text();
                 queue!(
                     w,
                     style::Print(self.stack),
-                    style::Print("Cu "),
+                    style::SetForegroundColor(t.0),
+                    style::Print(t.1),
+                    style::ResetColor,
                     )
             }
         }
