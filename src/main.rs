@@ -168,32 +168,35 @@ where
         }
         let event = read()?;
 
-        if event == Event::Key(KeyCode::Char('q').into()) {
-            execute!(w, cursor::SetCursorStyle::DefaultUserShape).unwrap();
-            break;
+        match event {
+            Event::Key(key) => {
+               match key.code {
+                    KeyCode::Char('q') => {
+                         execute!(w, cursor::SetCursorStyle::DefaultUserShape).unwrap();
+                         break;
+                    },
+                    KeyCode::Char('0') => {
+                         unimplemented!();
+                    },
+                    KeyCode::Char('n') => {
+                        icons::next_style();
+                        state.dirty = true;
+                    },
+                    _ => {}
+               }
+            }, 
+            Event::Resize(x, y) => {
+                size = (x, y);
+                state.dirty = true;
+            },
+            _ => {}
         }
 
-        if event == Event::Key(KeyCode::Char('0').into()) {
-            unimplemented!()
-        }
+        //if event == Event::Key(KeyCode::Char('q').into()) {
+        //    execute!(w, cursor::SetCursorStyle::DefaultUserShape).unwrap();
+        //    break;
+        //}
 
-        if let Event::Resize(x, y) = event {
-            size = (x,y);
-            state.dirty = true;
-        }
-
-        if event == Event::Key(KeyCode::Char('n').into()) {
-            icons::next_style();
-            state.dirty = true;
-        }
-
-        // match read()? {
-        //     'q' => {
-        //         execute!(w, cursor::SetCursorStyle::DefaultUserShape).unwrap();
-        //         break;
-        //     }
-        //     _ => {}
-        // };
     }
 
     execute!(
