@@ -17,15 +17,15 @@ mod card;
 mod effect;
 mod icons;
 
-const HORIZONTAL_CARD_MARGIN: u16 = 3;
+const HORIZONTAL_CARD_MARGIN: u16 = 0;
 const VERTICAL_CARD_MARGIN: u16 = 1;
-const CENTER_BOARD_MARGIN: u16 = 10;
+const CENTER_BOARD_MARGIN: u16 = 6;
 const BOARD_COLUMNS: usize = 3;
 const BOARD_ROWS: usize = 3;
 const BOARD_WIDTH: u16 = BOARD_COLUMNS as u16 * CARD_WIDTH + (BOARD_COLUMNS as u16 -1) * HORIZONTAL_CARD_MARGIN;
 
 const MIN_X: u16 = BOARD_WIDTH * 2 + CENTER_BOARD_MARGIN;
-const MIN_Y: u16 = CARD_HEIGHT * BOARD_ROWS as u16 + (CARD_HEIGHT -1) * VERTICAL_CARD_MARGIN + CARD_HEIGHT;
+const MIN_Y: u16 = CARD_HEIGHT * BOARD_ROWS as u16 + (BOARD_ROWS as u16 - 1) * VERTICAL_CARD_MARGIN + CARD_HEIGHT/2;
 
 type CardsOnBoard = [[Option<Card>; BOARD_ROWS]; BOARD_COLUMNS];
 
@@ -148,18 +148,21 @@ where
 
             if size.0 < MIN_X || size.1 < MIN_Y {
                 let text = format!("{}x{}", size.0, size.1);
+                let required = format!("Required size: {}x{}", MIN_X, MIN_Y);
                 queue!(
                     w,
-                    cursor::MoveTo(size.0/2 - text.len() as u16/2, size.1/2),
+                    cursor::MoveTo(size.0/2 - text.len() as u16/2, size.1/2 - 1),
                     style::Print(text),
-                    cursor::MoveTo(size.0/2 - 10, size.1/2 +1),
+                    cursor::MoveTo(size.0/2 - 10, size.1/2),
                     style::Print("Terminal is too small"),
+                    cursor::MoveTo(size.0/2 - required.len() as u16 / 2, size.1/2 + 1),
+                    style::Print(required),
                     )?;
                 w.flush()?;
             } else {
-                state.draw_player_board(w, size.0 / 2 - BOARD_WIDTH - CENTER_BOARD_MARGIN /2, 2)?;
-                state.draw_enemy_board(w, size.0 / 2 + CENTER_BOARD_MARGIN /2, 2)?;
-                state.draw_hand(w, size.0 / 2, size.1 - 1)?;
+                state.draw_player_board(w, size.0 / 2 - BOARD_WIDTH - CENTER_BOARD_MARGIN /2, 0)?;
+                state.draw_enemy_board(w, size.0 / 2 + CENTER_BOARD_MARGIN /2, 0)?;
+                state.draw_hand(w, size.0 / 2, size.1)?;
 
                 w.flush()?;
             }
